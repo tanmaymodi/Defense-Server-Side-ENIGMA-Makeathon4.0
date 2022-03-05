@@ -1,0 +1,11 @@
+check if email exists
+
+encode
+save in cookie
+create login sessin
+
+
+npm i express mongoose bcryptjs dotenv cors jsonwebtoken @hapi/joi --save
+npm i mustache consolidate body-parser nodemon morgan mongodb
+
+npm install -g nodemon
