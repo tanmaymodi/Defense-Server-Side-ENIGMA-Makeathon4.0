@@ -5,7 +5,7 @@ const router = express.Router();
 router.route('/')
 .get(async(req, res) => {
 
-    res.render('index.html');
+    res.render('login.ejs');
 });
 
 module.exports = router;

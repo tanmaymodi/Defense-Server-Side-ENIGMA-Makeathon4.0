@@ -2,16 +2,19 @@ const PORT = process.env.PORT || 4000;
 var express = require("express");
 var bodyParser = require("body-parser");
 const dotenv = require('dotenv');
+const path = require('path');
 const connectDB = require('./config/db');
+
+var app = express()
+const expressLayouts = require('express-ejs-layouts');
+// var engine = require('consolidate');
+
+// app.set('views', __dirname + '/views');
 connectDB();
 dotenv.config();
-var app = express()
-
-var engine = require('consolidate');
-const { patientDetails, PatientDetails, StaffDetails, HospitalDetails, PatientTransferDetails } = require("./models/user");
-app.set('views', __dirname + '/views');
-app.engine('html', engine.mustache);
-app.set('view engine', 'html');
+app.use(expressLayouts)
+app.set('layout', __dirname+'/views/layout/main.ejs')
+app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -19,7 +22,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-const path = require('path');
 app.use(express.static(path.join(__dirname + '/public')));
 
 
