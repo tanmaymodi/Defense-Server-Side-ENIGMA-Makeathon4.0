@@ -5,30 +5,78 @@
             <div id="contact-form" action="#" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <label>
-                                    <input name="name" value="Name:" onBlur="if(this.value=='') this.value='Name:'"
-                                        onFocus="if(this.value =='Name:' ) this.value=''" />
-                                </label>
+                        <input id="name" value="Name:" onBlur="if(this.value=='') this.value='Name:'"
+                            onFocus="if(this.value =='Name:' ) this.value=''" />
+                    </label>
                     <label>
-                                    <input name="email" value="Email:" onBlur="if(this.value=='') this.value='Email:'"
-                                        onFocus="if(this.value =='Email:' ) this.value=''" />
-                                </label>
+                        <input id="email" value="Email:" onBlur="if(this.value=='') this.value='Email:'"
+                            onFocus="if(this.value =='Email:' ) this.value=''" />
+                    </label>
                     <label>
-                                    <input name="password" value="Password:"
-                                        onBlur="if(this.value=='') this.value='Phone:'"
-                                        onFocus="if(this.value =='Phone:' ) this.value=''" />
-                                </label>
+                        <input id="password" value="Password:" onBlur="if(this.value=='') this.value='Phone:'"
+                            onFocus="if(this.value =='Phone:' ) this.value=''" />
+                    </label>
                     <label>
-                                    <input name="username" value="Username:"
-                                        onBlur="if(this.value=='') this.value='Phone:'"
-                                        onFocus="if(this.value =='Phone:' ) this.value=''" />
-                                </label>
+                        <input id="username" value="Username:" onBlur="if(this.value=='') this.value='Phone:'"
+                            onFocus="if(this.value =='Phone:' ) this.value=''" />
+                    </label>
                     <label>
-                                    <input name="phone" value="Phone:" onBlur="if(this.value=='') this.value='Phone:'"
-                                        onFocus="if(this.value =='Phone:' ) this.value=''" />
-                                </label>
-
-                    <div class="buttons"> <a class="button2" href="#">Clear</a> <a class="button2" href="#">Register</a> </div>
+                        <input id="phone" value="Phone:" onBlur="if(this.value=='') this.value='Phone:'"
+                            onFocus="if(this.value =='Phone:' ) this.value=''" />
+                    </label>
+                    <div id="status"></div>
+                    <div class="buttons"> <button class="button2" onclick="register()">Register</button>
+                    </div>
                 </fieldset>
             </div>
         </article>
     </div>
+
+
+
+    <script>
+        var register = () => {
+            var data = {
+                'name': document.getElementById("name").value,
+                'email': document.getElementById("email").value,
+                'password': document.getElementById("password").value,
+                'username': document.getElementById("username").value,
+                'phone': document.getElementById("phone").value
+            };
+            console.log(data);
+
+            var status = $("#status");
+
+            $.ajax({
+                type: "POST",
+                url: "/auth/register",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+
+                dataType: 'json',
+                success: (res) => {
+                    console.log("success", res);
+
+                    if (res.success) {
+                        status.html(res.msg);
+                        status.css("color", "green");
+                    } else {
+                        status.html(res.msg);
+                        status.css("color", "red");
+                    }
+
+                    var gg = "<br>";
+                    gg += "<a href='/verifyOtp'>Verify OTP</a>"
+                    document.getElementById('status').innerHTML += gg;
+
+
+                },
+                error: (err) => {
+                    console.log("err", err.responseJSON.msg);
+                    status.html(err.responseJSON.msg);
+                    status.css("color", "red");
+
+                }
+            })
+        }
+    </script>

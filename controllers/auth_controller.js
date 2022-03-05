@@ -103,8 +103,9 @@ var authController = {
     verifyOtp: {
         post: async(req, res) => {
             try {
+                console.log(req.body);
                 var email = req.body.email;
-                const user = User.findOne({email: email});
+                const user = await User.findOne({email: email});
                 console.log("verifyOtp post, user:", user);
                 if(!user){
                     throw {status: 409, err: "You have to register yourself!"};

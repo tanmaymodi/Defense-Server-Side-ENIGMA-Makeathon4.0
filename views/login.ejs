@@ -6,19 +6,62 @@
                 <fieldset>
 
                     <label>
-                                    <input name="email" value="Email:" onBlur="if(this.value=='') this.value='Email:'"
-                                        onFocus="if(this.value =='Email:' ) this.value=''" />
-                                </label>
+                        <input id="email" value="Email:" onBlur="if(this.value=='') this.value='Email:'"
+                            onFocus="if(this.value =='Email:' ) this.value=''" />
+                    </label>
                     <label>
-                                    <input name="password" value="Password:"
-                                        onBlur="if(this.value=='') this.value='Phone:'"
-                                        onFocus="if(this.value =='Phone:' ) this.value=''" />
-                                </label>
-
-                    <div class="buttons"> <a class="button2" href="#">lear</a> <a class="button2" href="#">Log In</a> </div>
+                        <input id="password" value="Password:" onBlur="if(this.value=='') this.value='Phone:'"
+                            onFocus="if(this.value =='Phone:' ) this.value=''" />
+                    </label>
+                    <div id="status"></div>
+                    <div class="buttons"> <button class="button2">Clear</button> <button onclick="submit()"
+                            class="button2">Log In</button>
+                    </div>
                 </fieldset>
             </div>
         </article>
     </div>
 
 </div>
+
+
+<script>
+    var submit = () => {
+
+        var username = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        var data = {
+            'email': username,
+            'password': password
+        };
+        console.log(data);
+        var status = $('#status');
+
+
+        $.ajax({
+            type: "POST",
+            url: "/auth/login",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+
+            dataType: 'json',
+            success: (res) => {
+
+                console.log("success", res);
+                // localStorage.setItem('access_token', res.access_token);
+
+                status.html("You are authorised");
+                status.css("color", "green");
+
+                window.location.replace('/dashboard');
+
+            },
+            error: (err) => {
+                console.log("err", err);
+                status.html(err.responseJSON.msg);
+                status.css('color', 'red');
+            }
+        });
+    }
+</script>

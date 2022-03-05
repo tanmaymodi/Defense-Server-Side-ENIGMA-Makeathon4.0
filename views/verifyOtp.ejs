@@ -1,25 +1,66 @@
 <div class="container_12">
     <div class="wrapper">
-        <div class="grid_8">
-            <div class="aligncenter">Copyright &copy; <a href="#">Domain Name</a> All Rights Reserved
-                <span>Design by <a target="_blank"
-                                    href="http://www.templatemonster.com/">TemplateMonster.com</a></span></div>
-        </div>
-        <div class="grid_3 prefix_1">
-            <ul class="list-services">
-                <li>
-                    <a href="#"></a>
-                </li>
-                <li class="item-1">
-                    <a href="#"></a>
-                </li>
-                <li class="item-2">
-                    <a href="#"></a>
-                </li>
-                <li class="item-3">
-                    <a href="#"></a>
-                </li>
-            </ul>
-        </div>
+        <article class="grid_8">
+            <h2>Verify OTP</h2>
+            <div id="contact-form" action="#" method="post" enctype="multipart/form-data">
+                <fieldset>
+                    <label>
+                        <input id="email" placeholder="Email" onBlur="if(this.value=='') this.value='Name:'"
+                            onFocus="if(this.value =='Name:' ) this.value=''" />
+                    </label>
+                    <label>
+                        <input id="otp" placeholder="OTP" onBlur="if(this.value=='') this.value='Name:'"
+                            onFocus="if(this.value =='Name:' ) this.value=''" />
+                    </label>
+
+                    <div id="status"></div>
+                    <div class="buttons"> <button class="button2" onclick="verify()">Verify</button>
+                    </div>
+                </fieldset>
+            </div>
+        </article>
     </div>
-</div>
+
+
+
+
+    <script>
+        var verify = () => {
+
+            var email = document.getElementById("email").value;
+            var otp = document.getElementById("otp").value;
+
+            var data = {
+                'email': email,
+                'otp': otp
+            };
+            console.log(data);
+            var status = $('#status');
+
+
+            $.ajax({
+                type: "POST",
+                url: "/auth/verifyOtp",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+
+                dataType: 'json',
+                success: (res) => {
+
+                    console.log("success", res);
+                    // localStorage.setItem('access_token', res.access_token);
+
+                    status.html("You are authorised");
+                    status.css("color", "green");
+
+                    window.location.replace('/dashboard');
+
+                },
+                error: (err) => {
+                    console.log("err", err);
+                    status.html(err.responseJSON.msg);
+                    status.css('color', 'red');
+                }
+            });
+        }
+    </script>
