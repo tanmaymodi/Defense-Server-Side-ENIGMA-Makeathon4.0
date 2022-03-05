@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 connectDB();
+dotenv.config();
 var app = express()
 
 var engine = require('consolidate');
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname + '/public')));
 
 
 app.use('/', require('./routes/index'));
+app.use('/auth', require('./routes/auth'));
 
 
 

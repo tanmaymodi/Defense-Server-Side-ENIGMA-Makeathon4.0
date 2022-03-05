@@ -14,7 +14,14 @@ const userDetails = new Schema({
         type: String,
         required: [true, "Password of patient is required"]
     },
+    username: String,
+    registered: {
+        type: Boolean,
+        default: false
+    },
+    contact: String,
+    otp: String,
 })
 
-const UserDetails = mongoose.model("UserDetails", userDetails);
-module.exports = {UserDetails};
+const User = mongoose.model("UserDetails", userDetails);
+module.exports = User;
