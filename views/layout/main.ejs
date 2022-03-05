@@ -30,6 +30,13 @@
 
                     <li><a href="/dashboard">Dashboard </a></li>
 
+
+
+                    <li>
+                        <div class="buttons"> <button class="button2" onclick="logout()">Log Out</button>
+                        </div>
+                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -76,5 +83,21 @@
     </div>
 
 </body>
+
+<script>
+    var logout = () => {
+        console.log("logig");
+        $.ajax({
+            type: "POST",
+            url: "/auth/logout",
+            success: (res) => {
+                console.log("logig suc", res);
+            },
+            error: (err) => {
+                console.log("logig err", err);
+            }
+        })
+    }
+</script>
 
 </html>

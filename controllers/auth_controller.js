@@ -2,6 +2,7 @@ const jwt = require('jwt-simple');
 const { mailerConfig } = require('../config/mailer');
 const { authHelper } = require('../helpers/authHelper');
 const mailer = require('../helpers/mailer');
+const { Data } = require('../models/beml_data');
 const User = require('../models/user');
 
 const errp = "authcontroller";
@@ -30,6 +31,7 @@ var authController = {
                 } catch (err) {
                     throw {status: 500, err: "Server error"};
                 }
+                res.locals.auth = true;
                 res.cookie('authtoken', token, {
                     httpOnly: true,
                     path: '/',
@@ -122,9 +124,44 @@ var authController = {
                 return res.status(err.status || 500).json({ success: false, err: err.err || "Server error", msg: 'Trouble in otp verification!' });
             }
         }
-    }
+    },
+
+    logout: async(req, res) => {
+        try {
+            if(!req.user){
+                return res.redirect('/');
+            }
+      
+            res.clearCookie('authtoken', { path: '/' })
+            return res.json({ msg: "Logged out!" })
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
     
 
+
+    dashboard:{
+        post :async(req, res) => {
+            try {
+                    var q = {title:"Title"};
+                    const d = await Data.find(q);
+                    var n  = Object.keys(d).length;
+                    console.log(n);
+                    for(var j=0;j<n;j++){
+                        console.log(d[j]);
+                    }
+                    if(!d){
+                    
+                    }
+                    return res.status(200).send({fdata:d, success: true, msg: 'Data Fetched successfully'});
+                } catch (err) {
+                    console.log(err, "Error in fetching data", err.err || err);
+                    return res.status(err.status || 500).json({ success: false, err: err.err || "data error", msg: 'Troble in fetching posts' });
+                }
+            }
+    },
 }
+
 
 module.exports = authController;

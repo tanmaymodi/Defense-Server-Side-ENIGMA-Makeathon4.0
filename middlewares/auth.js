@@ -4,6 +4,7 @@ const { authHelper } = require('../helpers/authHelper');
 
 var checkAuth = async(req, res, next) => {
     try {
+        console.log(req.cookies);
         const token = req.headers.authorization || req.cookies.authtoken;
         
         if (token) {

@@ -52,7 +52,8 @@
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
                         tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua vero eos
                         et accusam.</p>
-                    <a class="button2" href="#">more</a>
+                    <div id="status"></div>
+                    <button class="button2" onclick="fetch()">Load</button>
                 </div>
                 <h3 class="indent-bot">Our Archive</h3>
                 <div class="indent-left">
@@ -64,6 +65,7 @@
                         <li><a href="#">Aliquyam erat sed diam voluptua</a></li>
                         <li><a href="#">Vero eos et accusam et justo duo </a></li>
                         <li><a href="#">Stet clita kasd gubergren</a></li>
+                        <div id="fetched-data"></div>
                         <li class="last-item"><a href="#">Sea takimata sanctus est lorem </a></li>
                     </ul>
                 </div>
@@ -71,3 +73,39 @@
         </article>
     </div>
 </div>
+
+<script>
+    var fetch = () => {
+
+        var d = "";
+        username = "yes";
+        var data = {
+            'username': username,
+        };
+        console.log(data);
+        var status = $('#status');
+        $.ajax({
+            type: "POST",
+            url: "/auth/dashboard",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: 'json',
+            success: (res) => {
+
+                console.log("success", res['fdata']);
+                // localStorage.setItem('access_token', res.access_token);
+
+                // status.html("You are authorised");
+                // status.css("color", "green");
+
+                // window.location.replace('/dashboard');
+
+            },
+            error: (err) => {
+                console.log("err", err);
+
+
+            }
+        });
+    }
+</script>

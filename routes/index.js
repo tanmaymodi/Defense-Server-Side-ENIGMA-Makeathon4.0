@@ -1,5 +1,5 @@
 const authController = require("../controllers/auth_controller");
-
+const { Data } = require('../models/beml_data');
 const express = require('express');
 const checkAuth = require("../middlewares/auth");
 const router = express.Router();
@@ -13,9 +13,10 @@ router.route('/')
 
 router.route('/dashboard')
 .get(async(req, res) => {
-
     res.render('dashboard.ejs');
-});
+})
+.post(authController.login.post);
+
 
 
 router.route('/login')

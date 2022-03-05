@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 const dotenv = require('dotenv');
 const path = require('path');
 const connectDB = require('./config/db');
-
+const cookieParser = require('cookie-parser');
 var app = express()
 const expressLayouts = require('express-ejs-layouts');
 // var engine = require('consolidate');
@@ -15,7 +15,7 @@ dotenv.config();
 app.use(expressLayouts)
 app.set('layout', __dirname+'/views/layout/main.ejs')
 app.set("view engine", "ejs");
-
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
