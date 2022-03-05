@@ -30,6 +30,11 @@ var authController = {
                 } catch (err) {
                     throw {status: 500, err: "Server error"};
                 }
+                res.cookie('authtoken', token, {
+                    httpOnly: true,
+                    path: '/',
+                    maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
+                });
                 return res.status(200).send({success: true, msg: 'Login success', token: token, user: user});
             } catch (err) {
                 console.log(errp, "login err:", err.err || err);
@@ -60,6 +65,11 @@ var authController = {
                 await newuser.save();
                 var newUser = await User.findOne({email: nuser.email});
                 var token = await authHelper.generateAuthToken(newUser);
+                res.cookie('authtoken', token, {
+                    httpOnly: true,
+                    path: '/',
+                    maxAge: 30 * 24 * 60 * 60 * 1000 // 30days
+                });
                 // var mail = mailer.sendOtp(newuser);
                 var transposter = mailerConfig.getMailer();
                 // console.log("tra: ", transposter);
