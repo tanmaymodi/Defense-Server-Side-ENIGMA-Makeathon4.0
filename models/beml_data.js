@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // temp, humidity, ws
-const data = new Schema({
+const datas = new Schema({
     title: {
         type: String,
         required: true
@@ -36,5 +36,5 @@ const data = new Schema({
 
 */
 
-const Data = mongoose.model("Data", data);
+const Data = mongoose.model("Data", datas);
 module.exports = {Data};

@@ -4,6 +4,11 @@ const express = require('express');
 const checkAuth = require("../middlewares/auth");
 const router = express.Router();
 
+
+
+
+
+
 router.route('/login')
 .get(checkAuth, async(req, res) => {
     res.render('login.ejs');

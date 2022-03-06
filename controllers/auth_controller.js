@@ -139,28 +139,6 @@ var authController = {
         }
     },
     
-
-
-    dashboard:{
-        post :async(req, res) => {
-            try {
-                    var q = {title:"Title"};
-                    const d = await Data.find(q);
-                    var n  = Object.keys(d).length;
-                    console.log(n);
-                    for(var j=0;j<n;j++){
-                        console.log(d[j]);
-                    }
-                    if(!d){
-                    
-                    }
-                    return res.status(200).send({fdata:d, success: true, msg: 'Data Fetched successfully'});
-                } catch (err) {
-                    console.log(err, "Error in fetching data", err.err || err);
-                    return res.status(err.status || 500).json({ success: false, err: err.err || "data error", msg: 'Troble in fetching posts' });
-                }
-            }
-    },
 }
 
 

@@ -1,30 +1,17 @@
+<style>
+    img {
+        max-width: 200px;
+        max-height: 100%;
+        display: block;
+        /* remove extra space below image */
+    }
+</style>
+
 <div class="container_12">
-    <div class="wrapper p3">
-        <article class="grid_4">
-            <div class="banner">
-                <figure><img src="images/banner-1.png" alt=""></figure>
-                <a class="button" href="#">more</a>
-            </div>
-        </article>
-        <article class="grid_4">
-            <div class="banner">
-                <figure><img src="images/banner-2.png" alt=""></figure>
-                <a class="button" href="#">more</a>
-            </div>
-        </article>
-        <article class="grid_4">
-            <div class="banner">
-                <figure><img src="images/banner-3.png" alt=""></figure>
-                <a class="button" href="#">more</a>
-            </div>
-        </article>
-    </div>
     <div class="wrapper">
         <article class="grid_8">
             <h2 class="p1">Our Gallery</h2>
-            <div class="slideshow-container">
-                <div id="slideshow" class="slideshow"></div>
-            </div>
+
             <div id="thumbs" class="navigation p3">
                 <ul class="thumbs noscript">
                     <li><a class="thumb" href="images/gallery-img1.jpg"><img src="images/thumb-1.png" alt=""></a></li>
@@ -55,57 +42,90 @@
                     <div id="status"></div>
                     <button class="button2" onclick="fetch()">Load</button>
                 </div>
-                <h3 class="indent-bot">Our Archive</h3>
-                <div class="indent-left">
-                    <ul class="list-2">
-                        <li><a href="#">Lorem ipsum dolor sit amet</a></li>
-                        <li><a href="#">Consetetur sadipscing elitr sed diam </a></li>
-                        <li><a href="#">Nonumy eirmod tempor invidunt ut </a></li>
-                        <li><a href="#">Labore et dolore magna</a></li>
-                        <li><a href="#">Aliquyam erat sed diam voluptua</a></li>
-                        <li><a href="#">Vero eos et accusam et justo duo </a></li>
-                        <li><a href="#">Stet clita kasd gubergren</a></li>
-                        <div id="fetched-data"></div>
-                        <li class="last-item"><a href="#">Sea takimata sanctus est lorem </a></li>
-                    </ul>
+            </div>
+
+        </article>
+        <article class="grid_8">
+            <h2>Queued/Fetched</h2>
+            <div class="wrapper border-bot p3">
+                <time class="tdate-1" datetime="2012-10-21"> <span>Tuesday</span> <strong>31</strong>
+                </time>
+                <img src="images/page1-img2.png" alt=""> <br><br>
+
+                <div class="extra-wrap">
+                    <p class="prev-indent-bot"><span class="color-1">Lorem ipsum dolor sit amet, consetetur
+                            sadipscing elitr</span> sed diam nonumy eirmod tempor invidunt ut labore et
+                        dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo
+                        dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus ipsum dolor
+                        sit amet. </p>
+                    <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet
+                        lorem ipsum dolor sit amet.</p>
+                    <a class="button2" href="#">more</a>
                 </div>
             </div>
+            <div id="fetchedData"></div>
+
         </article>
     </div>
 </div>
 
+
+
 <script>
-    var fetch = () => {
+    $(document).ready(() => {
+        $.post({
+            url: '/fetch',
+            success: function (res) {
+                console.log("result is:");
+                // unmute ni kr sakta abi
+                console.log(res);
+                var status = $('#status');
+                var flag = res['isData'];
+                var outputData = $('fetchedData');
+                if (!flag) {
+                    console.log("err", res['msg']);
+                    status.html(res['msg']);
+                    status.css('color', 'red');
+                } else {
+                    console.log(res['data']);
+                    status.html("data feched successfully");
+                    status.css('color', 'green');
+                    var d = res['data'];
+                    var p = "";
+                    d.forEach(f => {
+                        p += " <div class='wrapper border-bot p3'>\
+                <time class='tdate-1' datetime='2012-10-21'> <span>Tuesday</span> <strong>31</strong>\
+                </time>"
 
-        var d = "";
-        username = "yes";
-        var data = {
-            'username': username,
-        };
-        console.log(data);
-        var status = $('#status');
-        $.ajax({
-            type: "POST",
-            url: "/auth/dashboard",
-            data: JSON.stringify(data),
-            contentType: "application/json",
-            dataType: 'json',
-            success: (res) => {
+                        p += "<img src='" + f['images'] + "' alt=''> <br><br>"
 
-                console.log("success", res['fdata']);
-                // localStorage.setItem('access_token', res.access_token);
 
-                // status.html("You are authorised");
-                // status.css("color", "green");
 
-                // window.location.replace('/dashboard');
+                        p += "<div class='extra-wrap'>\
+                    <p class='prev-indent-bot'><span class='color-1'>Description</p>\
+                    <p>" + f['description'] + "</p>";
 
-            },
-            error: (err) => {
-                console.log("err", err);
+                        for (var key in f["extra"]) {
+                            p += key + ": ";
+                            for (var g in f['extra'][key]) {
+                                p += "<p>" + g + " : " + f['extra'][key][g] + "</p>"
+                            }
+
+                        }
+
+                        p += "<a class='button2' href='#'>more</a>\
+                </div>\
+            </div>";
+                    });
+                    console.log(p);
+                    document.getElementById('fetchedData').innerHTML = p;
+                }
+
+
+
 
 
             }
         });
-    }
+    });
 </script>
